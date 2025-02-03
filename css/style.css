@@ -1,0 +1,408 @@
+html {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background-color: #14232e;
+  font-family: helvetica neue;
+  color: #94b8d1;
+  height: 100%;
+  line-height: 150%;
+  overflow: hidden;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1em 0;
+  color: #94b8d1;
+  font-weight: 700;
+}
+h1 {
+  font-size: 32px;
+  margin-top: 0;
+}
+h2 {
+  font-size: 24px;
+}
+p {
+  margin: 1em 0;
+}
+p,
+ul,
+ol,
+blockquote,
+pre {
+  line-height: 150%;
+  letter-spacing: 0.1px;
+}
+ul,
+ol {
+  margin: 0;
+}
+strong {
+  font-weight: 700;
+}
+em {
+  font-style: italic;
+}
+a {
+  color: #268ed9;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.page-wrapper {
+  position: relative;
+  padding: 50px;
+  width: 930px;
+  margin: 50px auto 0;
+}
+svg {
+  display: block;
+  background: 0 0;
+}
+#pie {
+  fill: #111e27;
+}
+#sleep-slice {
+  fill: #2e526b;
+  transition: fill 0.3s ease;
+}
+#sleep-slice:hover {
+  fill: #94b8d1;
+}
+#work-slice {
+  fill: #4d88b3;
+  transition: fill 0.3s ease;
+}
+#work-slice:hover {
+  fill: #94b8d1;
+}
+.number-label {
+  fill: rgba(153, 213, 255, 0.5);
+  font-family: helvetica neue;
+  font-weight: 400;
+  font-size: 13px;
+}
+.crosshairs {
+  stroke: rgba(153, 213, 255, 0.3);
+  pointer-events: none;
+}
+#hour-hand,
+#hour-hand-opposite {
+  stroke: #b3d0e6;
+  stroke-width: 2;
+  pointer-events: none;
+}
+#second-hand,
+#second-hand-opposite {
+  stroke: #b3d0e6;
+  pointer-events: none;
+}
+#second-hand-circle {
+  fill: #b3d0e6;
+  pointer-events: none;
+}
+.tooltip {
+  position: absolute;
+  float: left;
+  min-width: 80px;
+  top: 300px;
+  left: 70px;
+  padding: 7px 9px;
+  z-index: 5;
+  display: none;
+  border-radius: 7px;
+  background-color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  text-align: left;
+  white-space: nowrap;
+}
+.tooltip-label {
+  display: block;
+  font: 200 10px helvetica neue;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.tooltip-data {
+  font: 100 35px helvetica neue;
+  color: #eee;
+}
+.tooltip-hrs {
+  font: 200 10px helvetica neue;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+#mini-clock-container {
+  display: none;
+  position: absolute;
+  top: 418px;
+  right: 0;
+}
+#mini-clock-face {
+  fill: #111e27;
+  transition: fill 0.3s ease;
+}
+#mini-clock-face:hover {
+  fill: #2e526b;
+}
+#mini-clock-slice {
+  fill: #3d6d8f;
+  transition: fill 0.3s ease;
+}
+#mini-clock-slice:hover {
+  fill: #70a0c2;
+}
+#mini-clock-busy {
+  margin: -130px auto 0;
+  width: 100px;
+  text-align: center;
+  font: 200 13px helvetica neue;
+  color: #70a0c2;
+}
+#center-container {
+  width: 550px;
+  height: 550px;
+  display: block;
+  position: relative;
+  top: 0;
+  margin: -25px auto 0;
+}
+#main-clock-container {
+  position: relative;
+  text-align: center;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto 20px;
+}
+#timer-container {
+  display: block;
+  width: 300px;
+  position: absolute;
+  top: 560px;
+  left: 50%;
+  margin: 0 auto 0 -150px;
+  font: 200 10px helvetica neue;
+  text-align: center;
+}
+#timer-display {
+  border: 1px solid rgba(102, 191, 255, 0.2);
+  border-radius: 20px;
+  font: 100 60px helvetica neue;
+  color: rgba(168, 210, 240, 0.9);
+  width: 280px;
+  display: block;
+  line-height: 100%;
+  margin: 0 auto;
+  padding: 10px 0 12px;
+  text-rendering: optimizeLegibility;
+  transition: all 1s ease-in-out;
+}
+label[for="timer-display"] {
+  color: rgba(168, 210, 240, 0.4);
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font: 200 10px helvetica neue;
+  margin-bottom: 10px;
+}
+#free-time-container {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 140px;
+  margin: 15px auto 0;
+  text-transform: uppercase;
+  width: 150px;
+  padding: 19px 0;
+  text-align: center;
+  border: 1px solid rgba(102, 191, 255, 0.2);
+  border-radius: 20px;
+}
+label[for="free-time"] {
+  font: 200 10px helvetica neue;
+  color: rgba(168, 210, 240, 0.4);
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+#free-time {
+  font: 100 60px helvetica neue;
+}
+#time-inputs-container {
+  position: absolute;
+  width: 150px;
+  left: 0;
+  top: 0;
+  text-align: center;
+  padding: 25px 0 15px;
+  border: 1px solid rgba(102, 191, 255, 0.2);
+  border-radius: 20px;
+}
+#bedtime,
+#waketime,
+#go-to-work,
+#come-home,
+label[for="bedtime"],
+label[for="waketime"],
+label[for="go-to-work"],
+label[for="come-home"] {
+  display: block;
+  margin: 0 auto;
+}
+label[for="bedtime"],
+label[for="waketime"],
+label[for="go-to-work"],
+label[for="come-home"] {
+  text-transform: uppercase;
+  font: 200 10px helvetica neue;
+  color: rgba(168, 210, 240, 0.4);
+  letter-spacing: 1px;
+}
+#bedtime,
+#waketime,
+#go-to-work,
+#come-home {
+  outline: none;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font: 300 20px helvetica neue;
+  width: 80px;
+  height: 60px;
+  text-align: center;
+  color: rgba(168, 210, 240, 0.6);
+  letter-spacing: 0.5px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  transition: background-color 0.5s, border 0.5s, box-shadow 0.5s, color 0.5s;
+}
+#bedtime:focus,
+#waketime:focus,
+#go-to-work:focus,
+#come-home:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(158, 212, 250, 0.7);
+  box-shadow: 0 0 5px 3px rgba(110, 190, 247, 0.5);
+  color: rgba(168, 210, 240, 0.9);
+}
+#bedtime::-moz-selection,
+#waketime::-moz-selection,
+#go-to-work::-moz-selection,
+#come-home::-moz-selection {
+  background: rgba(112, 160, 194, 0.5);
+}
+#bedtime::selection,
+#waketime::selection,
+#go-to-work::selection,
+#come-home::selection {
+  background: rgba(112, 160, 194, 0.5);
+}
+#date-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  text-align: center;
+  padding: 23px 0;
+  border: 1px solid rgba(102, 191, 255, 0.2);
+  border-radius: 20px;
+}
+#day-name {
+  font: 200 10px helvetica neue;
+  color: rgba(168, 210, 240, 0.4);
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 0;
+  letter-spacing: 1px;
+}
+#day-number {
+  display: block;
+  font: 100 60px helvetica neue;
+  text-align: center;
+  line-height: 100%;
+}
+#month-name {
+  font: 200 10px helvetica neue;
+  color: rgba(168, 210, 240, 0.4);
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 0;
+  letter-spacing: 1px;
+}
+@keyframes turn_clockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes turn_clockwise {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes turn_counter_clockwise {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@-webkit-keyframes turn_counter_clockwise {
+  0% {
+    -webkit-transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+#ring {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  position: absolute;
+  display: inline-block;
+  border: 3px solid rgba(153, 213, 255, 0.1);
+  text-align: center;
+  border-top-color: rgba(153, 213, 255, 0.7);
+  width: 530px;
+  height: 530px;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -265px;
+  top: -15px;
+  border-radius: 100%;
+  animation: turn_clockwise 60s linear infinite;
+  -webkit-animation: turn_clockwise 60s linear infinite;
+}
+#ring-2 {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  position: absolute;
+  display: inline-block;
+  border: 2px dotted rgba(153, 213, 255, 0.1);
+  text-align: center;
+  border-top-color: rgba(153, 213, 255, 0.4);
+  width: 550px;
+  height: 550px;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -275px;
+  top: -25px;
+  border-radius: 100%;
+  animation: turn_counter_clockwise 30s linear infinite;
+  -webkit-animation: turn_counter_clockwise 30s linear infinite;
+}

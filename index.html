@@ -75,16 +75,43 @@
       <input type="text" id="come-home" onclick="if (!window.__cfRLUnblockHandlers) return false; this.select();" data-cf-modified-="">
     </div>
 
-     <!-- MARK: RECAP TIME 
+    <!-- MARK: RECAP TIME 
     -->
-    <div id="free-time-container">
-      <label for="free-time">Hours of free<br>time per day</label>
-      <span id="free-time">0</span>
-    </div>
     <div id="date-container">
       <span id="day-name">wednesday</span>
       <span id="day-number">08</span>
       <span id="month-name">april</span>
+    </div>
+    <div id="free-time-container">
+      <label for="free-time">Hours of free<br>time per day</label>
+      <span id="free-time">0</span>
+      <style>
+        #color-picker {
+          -webkit-appearance: none;
+          border: none;
+        }
+
+        #color-picker::-webkit-color-swatch-wrapper {
+          padding: 0;
+        }
+
+        #color-picker::-webkit-color-swatch {
+          border: none;
+        }
+
+        #color-picker {
+          display: none;
+          width: 50px;
+          height: 50px;
+          margin: 0 auto;
+        }
+
+        #free-time-container:hover #color-picker {
+          display: block;
+        }
+      </style>
+
+      <input type="color" id="color-picker">
     </div>
     <div id="timer-container">
       <label for="timer-display" id="timer-label">Time until bedtime</label>

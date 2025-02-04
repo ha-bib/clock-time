@@ -451,7 +451,7 @@
       ":" +
       leadingZero(minutes) +
       ":" +
-      leadingZero(seconds); 
+      leadingZero(seconds);
 
     return timeStr;
   };
@@ -460,87 +460,92 @@
     let now = new Date();
     let milliSecondsLeft = 0;
     let totalFreeSeconds = 0;
-    // var h = now.getHours() + (now.getMinutes() / 60) + (now.getSeconds()/3600);
-    // console.log(h);
 
-    if (now >= schedule.goToWorkDate && now < schedule.comeHomeDate) {
-      schedule.isAtWork = true;
-      schedule.isPreWork = schedule.isPreBed = schedule.isInBed = false;
-      milliSecondsLeft = schedule.comeHomeDate - now;
-    } else if (now >= schedule.comeHomeDate && now < schedule.bedTimeDate) {
-      schedule.isPreBed = true;
-      schedule.isPreWork = schedule.isAtWork = schedule.isInBed = false;
-      milliSecondsLeft = schedule.bedTimeDate - now;
-    } else if (now >= schedule.bedTimeDate && now < schedule.wakeTimeDate) {
-      schedule.isInBed = true;
-      schedule.isPreWork = schedule.isPreBed = schedule.isAtWork = false;
-      milliSecondsLeft = schedule.wakeTimeDate - now;
-    } else if (now >= schedule.wakeTimeDate && now < schedule.goToWorkDate) {
+    // Reorder conditions for a full day cycle:
+    if (now < schedule.goToWorkDate) {
       schedule.isPreWork = true;
       schedule.isPreBed = schedule.isAtWork = schedule.isInBed = false;
       milliSecondsLeft = schedule.goToWorkDate - now;
+      timer.label.innerHTML = "Time until work";
+      totalFreeSeconds = schedule.totalPreWorkFreeTime * 3600;
+    } else if (now < schedule.comeHomeDate) {
+      schedule.isAtWork = true;
+      schedule.isPreWork = schedule.isPreBed = schedule.isInBed = false;
+      milliSecondsLeft = schedule.comeHomeDate - now;
+      timer.label.innerHTML = "Time until finish work";
+    } else if (now < schedule.bedTimeDate) {
+      schedule.isPreBed = true;
+      schedule.isPreWork = schedule.isAtWork = schedule.isInBed = false;
+      milliSecondsLeft = schedule.bedTimeDate - now;
+      timer.label.innerHTML = "Time until bedtime";
+      totalFreeSeconds = schedule.totalPreBedFreeTime * 3600;
+    } else {
+      schedule.isInBed = true;
+      schedule.isPreWork = schedule.isPreBed = schedule.isAtWork = false;
+      milliSecondsLeft = schedule.wakeTimeDate - now;
+      timer.label.innerHTML = "Time until wake up";
     }
 
     const secondsLeft = Math.round(milliSecondsLeft / 1000);
-    let t = 0;
+    let t = secondsLeft / 3600;
+    schedule.totalHoursRemainingUntilNextThing = Math.round(t * 10) / 10;
 
-    if (schedule.isPreWork) {
-      timer.label.innerHTML = "Time until work";
-      totalFreeSeconds = schedule.totalPreWorkFreeTime * 3600;
-      t = secondsLeft / 3600;
-      schedule.totalHoursRemainingUntilNextThing = Math.round(t * 10) / 10;
-      miniClock.drawSlice(secondsLeft, totalFreeSeconds);
-      miniClock.busy.style.display = "none";
-    } else if (schedule.isPreBed) {
-      timer.label.innerHTML = "Time until bedtime";
-      totalFreeSeconds = schedule.totalPreBedFreeTime * 3600;
-      t = secondsLeft / 3600;
-      schedule.totalHoursRemainingUntilNextThing = Math.round(t * 10) / 10;
+    if (schedule.isPreWork || schedule.isPreBed) {
       miniClock.drawSlice(secondsLeft, totalFreeSeconds);
       miniClock.busy.style.display = "none";
     } else if (schedule.isAtWork) {
-      timer.label.innerHTML = "Time until finish work";
       miniClock.busy.innerHTML = "WORKING";
       miniClock.drawSlice(secondsLeft, totalFreeSeconds);
     } else if (schedule.isInBed) {
-      timer.label.innerHTML = "Time until wake up";
       miniClock.busy.innerHTML = "SLEEPING";
       miniClock.drawSlice(secondsLeft, totalFreeSeconds);
     }
-    timer.display.innerHTML = timer.calcTime(secondsLeft); 
+    timer.display.innerHTML = timer.calcTime(secondsLeft);
   };
 
   schedule.updateDates = function () {
     let now = new Date();
+
+    // Bedtime
+    schedule.bedTimeDate = new Date(now);
     schedule.bedTimeDate.setHours(parseInt(schedule.bedTime));
-    schedule.bedTimeDate.setMinutes(
-      (schedule.bedTime - parseInt(schedule.bedTime)) * 60
-    );
+    schedule.bedTimeDate.setMinutes((schedule.bedTime - parseInt(schedule.bedTime)) * 60);
     schedule.bedTimeDate.setSeconds(0);
-    schedule.wakeTimeDate.setHours(schedule.wakeTime);
-    schedule.wakeTimeDate.setMinutes(
-      (schedule.wakeTime - parseInt(schedule.wakeTime)) * 60
-    );
+    if (now >= schedule.bedTimeDate) {
+      schedule.bedTimeDate.setDate(schedule.bedTimeDate.getDate() + 1);
+    }
+
+    // Wake time
+    schedule.wakeTimeDate = new Date(now);
+    schedule.wakeTimeDate.setHours(parseInt(schedule.wakeTime));
+    schedule.wakeTimeDate.setMinutes((schedule.wakeTime - parseInt(schedule.wakeTime)) * 60);
     schedule.wakeTimeDate.setSeconds(0);
-    schedule.wakeTimeDate.setDate(now.getDate() + 1);
+    if (now >= schedule.wakeTimeDate) {
+      schedule.wakeTimeDate.setDate(schedule.wakeTimeDate.getDate() + 1);
+    }
 
-    schedule.goToWorkDate.setHours(schedule.goToWorkTime);
-    schedule.goToWorkDate.setMinutes(
-      (schedule.goToWorkTime - parseInt(schedule.goToWorkTime)) * 60
-    );
-    schedule.goToWorkDate.setSeconds(0);
+    // Go-to-work & come-home times (fix)
+    let tempGoToWork = new Date(now);
+    tempGoToWork.setHours(parseInt(schedule.goToWorkTime));
+    tempGoToWork.setMinutes((schedule.goToWorkTime - parseInt(schedule.goToWorkTime)) * 60);
+    tempGoToWork.setSeconds(0);
 
-    schedule.comeHomeDate.setHours(schedule.comeHomeTime);
-    schedule.comeHomeDate.setMinutes(
-      (schedule.comeHomeTime - parseInt(schedule.comeHomeTime)) * 60
-    );
-    schedule.comeHomeDate.setSeconds(0);
+    let tempComeHome = new Date(now);
+    tempComeHome.setHours(parseInt(schedule.comeHomeTime));
+    tempComeHome.setMinutes((schedule.comeHomeTime - parseInt(schedule.comeHomeTime)) * 60);
+    tempComeHome.setSeconds(0);
 
-    // if bedtime is between 0 and 12, set bedtime date to tomorrow
-    if (schedule.bedTime >= 0 && schedule.bedTime <= 12) {
-      schedule.bedTimeDate.setDate(now.getDate() + 1);
+    if (now < tempGoToWork) {
+      schedule.goToWorkDate = tempGoToWork;
+      schedule.comeHomeDate = tempComeHome;
+    } else if (now < tempComeHome) {
+      schedule.goToWorkDate = tempGoToWork;
+      schedule.comeHomeDate = tempComeHome;
     } else {
-      schedule.bedTimeDate.setDate(now.getDate());
+      tempGoToWork.setDate(tempGoToWork.getDate() + 1);
+      tempComeHome.setDate(tempComeHome.getDate() + 1);
+      schedule.goToWorkDate = tempGoToWork;
+      schedule.comeHomeDate = tempComeHome;
     }
     return 0;
   };
@@ -745,23 +750,25 @@
 
     // get timer to show time left before first interval kicks in
     now = new Date();
-    const currentHour = now.getHours(); // renamed to avoid duplicate 'h'
     let milliSecondsLeft = 0;
-    if (
-      currentHour >= schedule.wakeTime &&
-      currentHour < schedule.goToWorkTime
-    ) {
-      milliSecondsLeft = schedule.goToWorkDate - now;
-      timer.label.innerHTML = "Time until work";
+    if (now < schedule.goToWorkDate) {
+        milliSecondsLeft = schedule.goToWorkDate - now;
+        timer.label.innerHTML = "Time until work";
+    } else if (now < schedule.comeHomeDate) {
+        milliSecondsLeft = schedule.comeHomeDate - now;
+        timer.label.innerHTML = "Time until finish work";
+    } else if (now < schedule.bedTimeDate) {
+        milliSecondsLeft = schedule.bedTimeDate - now;
+        timer.label.innerHTML = "Time until bedtime";
     } else {
-      milliSecondsLeft = schedule.bedTimeDate - now;
-      timer.label.innerHTML = "Time until bedtime";
+        milliSecondsLeft = schedule.wakeTimeDate - now;
+        timer.label.innerHTML = "Time until wake up";
     }
     const secondsLeft = Math.round(milliSecondsLeft / 1000);
     if (secondsLeft <= 0) {
-      timer.display.innerHTML = "00:00:00";
+        timer.display.innerHTML = "00:00:00";
     } else {
-      timer.display.innerHTML = timer.calcTime(secondsLeft);
+        timer.display.innerHTML = timer.calcTime(secondsLeft);
     }
 
     // timer (time left until bedTime)
@@ -778,5 +785,28 @@
     const hourHandInterval = setInterval(function () {
       clock.updateHourHand();
     }, 30000);
+
+    // Add event listener for color-picker changes
+    document
+      .getElementById("color-picker")
+      .addEventListener("input", function (e) {
+        let hex = e.target.value;
+        if (hex.charAt(0) === "#") {
+          hex = hex.substring(1);
+        }
+        if (hex.length === 3) {
+          hex = hex
+            .split("")
+            .map((x) => x + x)
+            .join("");
+        } 
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        document.documentElement.style.setProperty("--color-r", r);
+        document.documentElement.style.setProperty("--color-g", g);
+        document.documentElement.style.setProperty("--color-b", b);
+      });
+
   }; // ======== end of window.onload
 })();

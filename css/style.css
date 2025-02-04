@@ -1,11 +1,68 @@
+:root {
+  --color-test: rgba(153, 213, 213);
+  --color-r: 44;
+  --color-g: 170;
+  --color-b: 140;
+  --color-rgb: var(--color-r), var(--color-g), var(--color-b);
+  --color-body-bg: rgba(
+    calc(var(--color-r) - 100),
+    calc(var(--color-g) - 150),
+    calc(var(--color-b) - 160),
+    1
+  );
+  --color-text: rgba(var(--color-rgb), 0.9);
+  --color-link: #268ed9;
+  --color-clock-face: rgba(var(--color-rgb), 0.1);
+  --color-sleep-slice: rgba(
+    calc(var(--color-r) - 80),
+    calc(var(--color-g) - 120),
+    calc(var(--color-b) - 100)
+  );
+  --color-work-slice: rgba(
+    calc(var(--color-r) - 10),
+    calc(var(--color-g) - 10),
+    calc(var(--color-b) - 10),
+    0.6
+  );
+  --color-slice-hover: rgba(var(--color-rgb), 0.9);
+  --color-number-label: rgba(var(--color-rgb), 0.5);
+  --color-crosshairs: rgba(var(--color-rgb), 0.3);
+  --color-hand: rgba(var(--color-rgb), 0.9);
+  --color-tooltip-bg: rgba(0, 0, 0, 0.6);
+  --color-tooltip-label: #aaa;
+  --color-tooltip-data: #eee;
+  --color-mini-clock-face: #111e27;
+  --color-mini-clock-slice: #3d6d8f;
+  --color-mini-clock-slice-hover: #70a0c2;
+  --color-mini-clock-busy: #70a0c2;
+  --color-timer-border: rgba(var(--color-rgb), 0.2);
+  --color-timer-text: rgba(var(--color-rgb), 0.9);
+  --color-timer-label: rgba(var(--color-rgb), 0.4);
+  --color-free-time-border: rgba(var(--color-rgb), 0.2);
+  --color-free-time-label: rgba(var(--color-rgb), 0.4);
+  --color-free-time-text: rgba(var(--color-rgb), 0.6);
+  --color-input-bg: rgba(0, 0, 0, 0.2);
+  --color-input-focus-bg: rgba(0, 0, 0, 0.1);
+  --color-input-focus-border: rgba(158, 212, 250, 0.7);
+  --color-input-focus-shadow: rgba(110, 190, 247, 0.5);
+  --color-input-focus-text: rgba(var(--color-rgb), 0.9);
+  --color-input-selection: rgba(112, 160, 194, 0.5);
+  --color-date-border: rgba(var(--color-rgb), 0.2);
+  --color-date-label: rgba(var(--color-rgb), 0.4);
+  --color-ring-border: rgba(var(--color-rgb), 0.1);
+  --color-ring-border-top: rgba(var(--color-rgb), 0.7);
+  --color-ring-2-border: rgba(var(--color-rgb), 0.1);
+  --color-ring-2-border-top: rgba(var(--color-rgb), 0.4);
+}
+
 html {
   height: 100%;
   overflow: hidden;
 }
 body {
-  background-color: #14232e;
+  background-color: var(--color-body-bg);
   font-family: helvetica neue;
-  color: #94b8d1;
+  color: var(--color-text);
   height: 100%;
   line-height: 150%;
   overflow: hidden;
@@ -17,7 +74,7 @@ h4,
 h5,
 h6 {
   margin: 1em 0;
-  color: #94b8d1;
+  color: var(--color-text);
   font-weight: 700;
 }
 h1 {
@@ -49,7 +106,7 @@ em {
   font-style: italic;
 }
 a {
-  color: #268ed9;
+  color: var(--color-link);
   text-decoration: none;
 }
 a:hover {
@@ -66,45 +123,45 @@ svg {
   background: 0 0;
 }
 #pie {
-  fill: #111e27;
+  fill: var(--color-clock-face);
 }
 #sleep-slice {
-  fill: #2e526b;
+  fill: var(--color-sleep-slice);
   transition: fill 0.3s ease;
 }
 #sleep-slice:hover {
-  fill: #94b8d1;
+  fill: var(--color-slice-hover);
 }
 #work-slice {
-  fill: #4d88b3;
+  fill: var(--color-work-slice);
   transition: fill 0.3s ease;
 }
 #work-slice:hover {
-  fill: #94b8d1;
+  fill: var(--color-slice-hover);
 }
 .number-label {
-  fill: rgba(153, 213, 255, 0.5);
+  fill: var(--color-number-label);
   font-family: helvetica neue;
   font-weight: 400;
   font-size: 13px;
 }
 .crosshairs {
-  stroke: rgba(153, 213, 255, 0.3);
+  stroke: var(--color-crosshairs);
   pointer-events: none;
 }
 #hour-hand,
 #hour-hand-opposite {
-  stroke: #b3d0e6;
+  stroke: var(--color-hand);
   stroke-width: 2;
   pointer-events: none;
 }
 #second-hand,
 #second-hand-opposite {
-  stroke: #b3d0e6;
+  stroke: var(--color-hand);
   pointer-events: none;
 }
 #second-hand-circle {
-  fill: #b3d0e6;
+  fill: var(--color-hand);
   pointer-events: none;
 }
 .tooltip {
@@ -117,7 +174,7 @@ svg {
   z-index: 5;
   display: none;
   border-radius: 7px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--color-tooltip-bg);
   pointer-events: none;
   text-align: left;
   white-space: nowrap;
@@ -125,17 +182,17 @@ svg {
 .tooltip-label {
   display: block;
   font: 200 10px helvetica neue;
-  color: #aaa;
+  color: var(--color-tooltip-label);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .tooltip-data {
   font: 100 35px helvetica neue;
-  color: #eee;
+  color: var(--color-tooltip-data);
 }
 .tooltip-hrs {
   font: 200 10px helvetica neue;
-  color: #aaa;
+  color: var(--color-tooltip-label);
   letter-spacing: 1px;
 }
 #mini-clock-container {
@@ -145,25 +202,25 @@ svg {
   right: 0;
 }
 #mini-clock-face {
-  fill: #111e27;
+  fill: var(--color-mini-clock-face);
   transition: fill 0.3s ease;
 }
 #mini-clock-face:hover {
-  fill: #2e526b;
+  fill: var(--color-sleep-slice);
 }
 #mini-clock-slice {
-  fill: #3d6d8f;
+  fill: var(--color-mini-clock-slice);
   transition: fill 0.3s ease;
 }
 #mini-clock-slice:hover {
-  fill: #70a0c2;
+  fill: var(--color-mini-clock-slice-hover);
 }
 #mini-clock-busy {
   margin: -130px auto 0;
   width: 100px;
   text-align: center;
   font: 200 13px helvetica neue;
-  color: #70a0c2;
+  color: var(--color-mini-clock-busy);
 }
 #center-container {
   width: 550px;
@@ -191,10 +248,10 @@ svg {
   text-align: center;
 }
 #timer-display {
-  border: 1px solid rgba(102, 191, 255, 0.2);
+  border: 1px solid var(--color-timer-border);
   border-radius: 20px;
   font: 100 60px helvetica neue;
-  color: rgba(168, 210, 240, 0.9);
+  color: var(--color-timer-text);
   width: 280px;
   display: block;
   line-height: 100%;
@@ -204,7 +261,7 @@ svg {
   transition: all 1s ease-in-out;
 }
 label[for="timer-display"] {
-  color: rgba(168, 210, 240, 0.4);
+  color: var(--color-timer-label);
   display: block;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -221,12 +278,12 @@ label[for="timer-display"] {
   width: 150px;
   padding: 19px 0;
   text-align: center;
-  border: 1px solid rgba(102, 191, 255, 0.2);
+  border: 1px solid var(--color-free-time-border);
   border-radius: 20px;
 }
 label[for="free-time"] {
   font: 200 10px helvetica neue;
-  color: rgba(168, 210, 240, 0.4);
+  color: var(--color-free-time-label);
   display: block;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -234,6 +291,7 @@ label[for="free-time"] {
 }
 #free-time {
   font: 100 60px helvetica neue;
+  color: var(--color-free-time-text);
 }
 #time-inputs-container {
   position: absolute;
@@ -242,7 +300,7 @@ label[for="free-time"] {
   top: 0;
   text-align: center;
   padding: 25px 0 15px;
-  border: 1px solid rgba(102, 191, 255, 0.2);
+  border: 1px solid var(--color-free-time-border);
   border-radius: 20px;
 }
 #bedtime,
@@ -262,7 +320,7 @@ label[for="go-to-work"],
 label[for="come-home"] {
   text-transform: uppercase;
   font: 200 10px helvetica neue;
-  color: rgba(168, 210, 240, 0.4);
+  color: var(--color-free-time-label);
   letter-spacing: 1px;
 }
 #bedtime,
@@ -271,13 +329,13 @@ label[for="come-home"] {
 #come-home {
   outline: none;
   border: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--color-input-bg);
   border-radius: 10px;
   font: 300 20px helvetica neue;
   width: 80px;
   height: 60px;
   text-align: center;
-  color: rgba(168, 210, 240, 0.6);
+  color: var(--color-free-time-text);
   letter-spacing: 0.5px;
   margin-top: 5px;
   margin-bottom: 20px;
@@ -287,22 +345,22 @@ label[for="come-home"] {
 #waketime:focus,
 #go-to-work:focus,
 #come-home:focus {
-  background-color: rgba(0, 0, 0, 0.1);
-  border: 2px solid rgba(158, 212, 250, 0.7);
-  box-shadow: 0 0 5px 3px rgba(110, 190, 247, 0.5);
-  color: rgba(168, 210, 240, 0.9);
+  background-color: var(--color-input-focus-bg);
+  border: 2px solid var(--color-input-focus-border);
+  box-shadow: 0 0 5px 3px var(--color-input-focus-shadow);
+  color: var(--color-input-focus-text);
 }
 #bedtime::-moz-selection,
 #waketime::-moz-selection,
 #go-to-work::-moz-selection,
 #come-home::-moz-selection {
-  background: rgba(112, 160, 194, 0.5);
+  background: var(--color-input-selection);
 }
 #bedtime::selection,
 #waketime::selection,
 #go-to-work::selection,
 #come-home::selection {
-  background: rgba(112, 160, 194, 0.5);
+  background: var(--color-input-selection);
 }
 #date-container {
   position: absolute;
@@ -311,12 +369,12 @@ label[for="come-home"] {
   width: 150px;
   text-align: center;
   padding: 23px 0;
-  border: 1px solid rgba(102, 191, 255, 0.2);
+  border: 1px solid var(--color-date-border);
   border-radius: 20px;
 }
 #day-name {
   font: 200 10px helvetica neue;
-  color: rgba(168, 210, 240, 0.4);
+  color: var(--color-date-label);
   display: block;
   text-transform: uppercase;
   margin-bottom: 0;
@@ -330,7 +388,7 @@ label[for="come-home"] {
 }
 #month-name {
   font: 200 10px helvetica neue;
-  color: rgba(168, 210, 240, 0.4);
+  color: var(--color-date-label);
   display: block;
   text-transform: uppercase;
   margin-bottom: 0;
@@ -374,9 +432,9 @@ label[for="come-home"] {
   -webkit-box-sizing: border-box;
   position: absolute;
   display: inline-block;
-  border: 3px solid rgba(153, 213, 255, 0.1);
+  border: 3px solid var(--color-ring-border);
   text-align: center;
-  border-top-color: rgba(153, 213, 255, 0.7);
+  border-top-color: var(--color-ring-border-top);
   width: 530px;
   height: 530px;
   margin: 0 auto;
@@ -393,9 +451,9 @@ label[for="come-home"] {
   -webkit-box-sizing: border-box;
   position: absolute;
   display: inline-block;
-  border: 2px dotted rgba(153, 213, 255, 0.1);
+  border: 2px dotted var(--color-ring-2-border);
   text-align: center;
-  border-top-color: rgba(153, 213, 255, 0.4);
+  border-top-color: var(--color-ring-2-border-top);
   width: 550px;
   height: 550px;
   margin: 0 auto;
